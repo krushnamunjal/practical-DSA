@@ -1,0 +1,87 @@
+// PROGRAM FOR MIRROR IMAGE OF BINARY SEARCH TREE:
+
+#include <iostream>
+using namespace std;
+
+// Definition for a binary tree node.
+struct TreeNode {
+    int data;
+    TreeNode* left;
+    TreeNode* right;
+
+    TreeNode(int val) : data(val), left(nullptr), right(nullptr) {}
+};
+
+// Function to insert a node into the BST
+TreeNode* insert(TreeNode* root, int value) {
+    if (!root) {
+        return new TreeNode(value);
+    }
+
+    if (value < root->data) {
+        root->left = insert(root->left, value);
+    } else {
+        root->right = insert(root->right, value);
+    }
+
+    return root;
+}
+
+// Function to print the inorder traversal of a binary tree
+void inorderTraversal(TreeNode* root) {
+    if (root) {
+        inorderTraversal(root->left);
+        cout << root->data << " ";
+        inorderTraversal(root->right);
+    }
+}
+
+// Function to mirror a binary search tree
+void mirrorBST(TreeNode* root) {
+    if (root) {
+        swap(root->left, root->right);
+        mirrorBST(root->left);
+        mirrorBST(root->right);
+    }
+}
+
+int main() {
+    TreeNode* root = nullptr;
+    int n, value;
+
+    // Input: Number of elements in the BST
+    cout << "Enter the number of elements in the BST: ";
+    cin >> n;
+
+    // Input: Elements of the BST
+    cout << "Enter the elements of the BST:\n";
+    for (int i = 0; i < n; ++i) {
+        cin >> value;
+        root = insert(root, value);
+    }
+
+    cout << "Original BST Inorder Traversal: ";
+    inorderTraversal(root);
+    cout << endl;
+
+    // Mirror the BST
+    mirrorBST(root);
+
+    cout << "Mirror BST Inorder Traversal: ";
+    inorderTraversal(root);
+    cout << endl;
+
+    // Clean up memory
+    // You may want to implement a proper destructor for TreeNode to free memory.
+    delete root;
+
+    return 0;
+}
+
+
+/* OUTPUT FOR PROGRAM:
+Enter the number of elements in the BST: 5
+Enter the elements of the BST:
+2 8 6 4 10
+Original BST Inorder Traversal: 2 4 6 8 10 
+Mirror BST Inorder Traversal: 10 8 6 4 2   */

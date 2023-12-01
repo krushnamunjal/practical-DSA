@@ -1,0 +1,52 @@
+PROGRAM FOR EVALUATION OF PREFIX EXPRESSION:
+
+#include <iostream>
+#include <stack>
+#include <string>
+#include <sstream>
+
+using namespace std;
+
+// Function to evaluate a prefix expression
+int evaluatePrefixExpression(const string &expression) {
+    stack<int> operands;
+
+    istringstream iss(expression);
+    string token;
+    while (iss >> token) {
+        if (isdigit(token[0]) || (token[0] == '-' && token.size() > 1)) {
+            // Token is an operand, convert it to an integer and push onto the stack
+            operands.push(stoi(token));
+        } else {
+            // Token is an operator, pop the top two operands, apply the operator, and push the result
+            int operand2 = operands.top();
+            operands.pop();
+            int operand1 = operands.top();
+            operands.pop();
+
+            if (token == "+") operands.push(operand1 + operand2);
+            else if (token == "-") operands.push(operand1 - operand2);
+            else if (token == "*") operands.push(operand1 * operand2);
+            else if (token == "/") operands.push(operand1 / operand2);
+        }
+    }
+
+    // The result should be on top of the stack
+    return operands.top();
+}
+
+int main() {
+    string expression;
+    cout << "Enter a prefix expression: ";
+    getline(cin, expression);
+
+    int result = evaluatePrefixExpression(expression);
+    cout << "Result: " << result << endl;
+
+    return 0;
+}
+
+
+OUTPUT OF PROGRAM:
+Enter a prefix expression: 52+3-*
+Result: 52

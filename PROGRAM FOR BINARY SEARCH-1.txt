@@ -1,0 +1,58 @@
+PROGRAM FOR BINARY SEARCH:
+
+#include <iostream>
+using namespace std;
+
+int binarySearch(int arr[], int n, int target) {
+    int left = 0;
+    int right = n - 1;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+
+        if (arr[mid] == target) {
+            return mid; // Element found, return its index
+        }
+        if (arr[mid] < target) {
+            left = mid + 1; // Search in the right half
+        } else {
+            right = mid - 1; // Search in the left half
+        }
+    }
+
+    return -1; // Element not found
+}
+
+int main() {
+    int n;
+    cout << "Enter the number of elements in the sorted array: ";
+    cin >> n;
+
+    int arr[n];
+
+    cout << "Enter the sorted array elements: ";
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i];
+    }
+
+    int target;
+    cout << "Enter the element to search for: ";
+    cin >> target;
+
+    int result = binarySearch(arr, n, target);
+
+    if (result != -1) {
+        cout << "Element found at index " << result << endl;
+    } else {
+        cout << "Element not found in the array." << endl;
+    }
+
+    return 0;
+}
+
+
+OUTPUT OF PROGRAM:
+Enter the number of elements in the sorted array: 10                   
+Enter the sorted array elements: 10 20 30 40 50 60 70 80 90 100
+Enter the element to search for: 60
+Element found at index 5

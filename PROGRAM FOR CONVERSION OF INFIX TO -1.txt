@@ -1,0 +1,78 @@
+PROGRAM FOR CONVERSION OF INFIX TO PREFIX:
+
+#include <iostream>
+#include <stack>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+// Function to check if a character is an operator
+bool isOperator(char c) {
+    return (c == '+' || c == '-' || c == '*' || c == '/');
+}
+
+// Function to get the precedence of an operator
+int precedence(char c) {
+    if (c == '+' || c == '-')
+        return 1;
+    if (c == '*' || c == '/')
+        return 2;
+    return 0;
+}
+
+// Function to convert infix expression to prefix expression
+string infixToPrefix(const string& infix) {
+    stack<char> operatorStack;
+    string prefixExpression;
+
+    // Reverse the infix expression
+    string reversedInfix = infix;
+    reverse(reversedInfix.begin(), reversedInfix.end());
+
+    for (char c : reversedInfix) {
+        if (isalnum(c)) {
+            prefixExpression += c;
+        } else if (c == ')') {
+            operatorStack.push(c);
+        } else if (c == '(') {
+            while (!operatorStack.empty() && operatorStack.top() != ')') {
+                prefixExpression += operatorStack.top();
+                operatorStack.pop();
+            }
+            operatorStack.pop(); // Pop and discard the ')'
+        } else if (isOperator(c)) {
+            while (!operatorStack.empty() && precedence(operatorStack.top()) >= precedence(c)) {
+                prefixExpression += operatorStack.top();
+                operatorStack.pop();
+            }
+            operatorStack.push(c);
+        }
+    }
+
+    // Pop any remaining operators from the stack
+    while (!operatorStack.empty()) {
+        prefixExpression += operatorStack.top();
+        operatorStack.pop();
+    }
+
+    // Reverse the prefix expression to obtain the final result
+    reverse(prefixExpression.begin(), prefixExpression.end());
+
+    return prefixExpression;
+}
+
+int main() {
+    string infixExpression;
+    cout << "Enter an infix expression: ";
+    cin >> infixExpression;
+
+    string prefixExpression = infixToPrefix(infixExpression);
+
+    cout << "The prefix expression is: " << prefixExpression << endl;
+
+    return 0;
+}
+
+OUTPUT OF PROGRAM:
+Enter an infix expression: ((A+B)*(C-D))/E
+The prefix expression is: /*+AB-CDE

@@ -1,0 +1,47 @@
+PROGRAM FOR LINEAR SEARCH:
+
+#include <iostream>
+using namespace std;
+
+int linearSearch(int arr[], int size, int key) {
+    for (int i = 0; i < size; i++) {
+        if (arr[i] == key) {
+            return i;  // Found the key at index i
+        }
+    }
+    return -1;  // Key not found in the array
+}
+
+int main() {
+    int size;
+    cout << "Enter the size of the array: ";
+    cin >> size;
+
+    int arr[size];
+
+    cout << "Enter " << size << " elements: ";
+    for (int i = 0; i < size; i++) {
+        cin >> arr[i];
+    }
+
+    int key;
+    cout << "Enter the element to search for: ";
+    cin >> key;
+
+    int result = linearSearch(arr, size, key);
+
+    if (result != -1) {
+        cout << "Element found at index " << result << endl;
+    } else {
+        cout << "Element not found in the array." << endl;
+    }
+
+    return 0;
+}
+
+
+OUTPUT OF PROGRAM:
+Enter the size of the array: 10
+Enter 10 elements: 20 1 22 52 75 21 10 6 4 8
+Enter the element to search for: 6
+Element found at index 7

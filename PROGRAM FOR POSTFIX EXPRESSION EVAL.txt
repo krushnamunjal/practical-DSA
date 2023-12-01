@@ -1,0 +1,58 @@
+PROGRAM FOR POSTFIX EXPRESSION EVALUATION:
+
+#include <iostream>
+#include <stack>
+#include <string>
+#include <sstream>
+
+using namespace std;
+
+bool isOperator(char c) {
+    return c == '+' || c == '-' || c == '*' || c == '/';
+}
+
+int performOperation(int operand1, int operand2, char op) {
+    switch (op) {
+        case '+': return operand1 + operand2;
+        case '-': return operand1 - operand2;
+        case '*': return operand1 * operand2;
+        case '/': return operand1 / operand2;
+        default: return 0;
+    }
+}
+
+int evaluatePostfixExpression(const string& expression) {
+    stack<int> operandStack;
+
+    istringstream iss(expression);
+    string token;
+    while (iss >> token) {
+        if (isdigit(token[0]) || (token[0] == '-' && token.size() > 1)) { // Check if token is a number
+            operandStack.push(stoi(token));
+        } else if (isOperator(token[0])) { // Check if token is an operator
+            int operand2 = operandStack.top();
+            operandStack.pop();
+            int operand1 = operandStack.top();
+            operandStack.pop();
+            int result = performOperation(operand1, operand2, token[0]);
+            operandStack.push(result);
+        }
+    }
+
+    return operandStack.top();
+}
+
+int main() {
+    string expression;
+    cout << "Enter a postfix expression: ";
+    getline(cin, expression);
+
+    int result = evaluatePostfixExpression(expression);
+    cout << "Result: " << result << endl;
+
+    return 0;
+}
+
+OUTPUT OF PROGRAM:
+Enter a postfix expression: 53+82-*
+Result: 53

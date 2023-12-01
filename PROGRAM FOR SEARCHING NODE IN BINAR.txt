@@ -1,0 +1,94 @@
+//PROGRAM FOR SEARCHING NODE IN BINARY SEARCH TREE:
+
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* left;
+    Node* right;
+    
+    Node(int value) : data(value), left(nullptr), right(nullptr) {}
+};
+
+class BinarySearchTree {
+private:
+    Node* root;
+
+public:
+    BinarySearchTree() : root(nullptr) {}
+
+    void insert(int value) {
+        root = insertRec(root, value);
+    }
+
+    bool search(int value) {
+        return searchRec(root, value);
+    }
+
+private:
+    Node* insertRec(Node* root, int value) {
+        if (root == nullptr) {
+            return new Node(value);
+        }
+
+        if (value < root->data) {
+            root->left = insertRec(root->left, value);
+        } else if (value > root->data) {
+            root->right = insertRec(root->right, value);
+        }
+
+        return root;
+    }
+
+    bool searchRec(Node* root, int value) {
+        if (root == nullptr || root->data == value) {
+            return root != nullptr;
+        }
+
+        if (value < root->data) {
+            return searchRec(root->left, value);
+        } else {
+            return searchRec(root->right, value);
+        }
+    }
+};
+
+int main() {
+    BinarySearchTree bst;
+
+    // Insert values into the BST
+    int numValues;
+    cout << "Enter the number of values to insert: ";
+    cin >> numValues;
+
+    for (int i = 0; i < numValues; ++i) {
+        int value;
+        cout << "Enter value #" << i + 1 << ": ";
+        cin >> value;
+        bst.insert(value);
+    }
+
+    // Search for a value in the BST
+    int searchValue;
+    cout << "Enter a value to search for: ";
+    cin >> searchValue;
+
+    if (bst.search(searchValue)) {
+        cout << "Value found in the BST.\n";
+    } else {
+        cout << "Value not found in the BST.\n";
+    }
+
+    return 0;
+}
+
+/* OUTPUT FOR PROGRAM:
+Enter the number of values to insert: 5
+Enter value #1: 2
+Enter value #2: 12
+Enter value #3: 5
+Enter value #4: 7
+Enter value #5: 1
+Enter a value to search for: 7
+Value found in the BST. */
